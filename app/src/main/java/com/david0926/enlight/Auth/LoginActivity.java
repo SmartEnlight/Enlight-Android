@@ -16,24 +16,15 @@ import androidx.databinding.DataBindingUtil;
 import com.david0926.enlight.MainActivity;
 import com.david0926.enlight.R;
 import com.david0926.enlight.databinding.ActivityLoginBinding;
+import com.david0926.enlight.util.TokenCache;
 import com.david0926.enlight.util.UserCache;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.SignInMethodQueryResult;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.List;
 
 import gun0912.tedkeyboardobserver.TedKeyboardObserver;
 
 public class LoginActivity extends AppCompatActivity {
 
     private BroadcastReceiver broadcastReceiver;
-
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
     private ActivityLoginBinding binding;
 
     @Override
@@ -52,17 +43,17 @@ public class LoginActivity extends AppCompatActivity {
 
         //sign in button clicked
         binding.btnLoginSignin.setOnClickListener(view -> {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            binding.setOnProgress(true);
+            hideKeyboard(this);
 
-//            binding.setOnProgress(true);
-//            hideKeyboard(this);
-//
-//            String id = binding.getEmail(), pw = binding.getPw();
-//
-//            if (TextUtils.isEmpty(id) || TextUtils.isEmpty(pw)) //empty field
-//                showErrorMsg("Please fill all required fields.");
-//            else signIn(id, pw);
+            String id = binding.getEmail(), pw = binding.getPw();
+            LoginNetwork.login(id, pw, getResources(), (token, user) -> {
+                runOnUiThread(() -> {
+                    TokenCache.setToken(this, token);
+                    UserCache.setUser(this, user);
+                    finishSignIn();
+                });
+            }, this::showErrorMsg);
 
         });
 
@@ -83,56 +74,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         registerReceiver(broadcastReceiver, new IntentFilter("finish_signup"));
-    }
-
-    private void signIn(String id, String pw) {
-
-        //why did I code like this???
-
-        OnCompleteListener<DocumentSnapshot> firestoreCompleteListener = task -> {
-
-            DocumentSnapshot document = task.getResult();
-            if (document != null && document.exists()) {
-
-                //3. firebase auth (sign in)
-                firebaseAuth
-                        .signInWithEmailAndPassword(id, pw)
-                        .addOnSuccessListener(authResult -> {
-                            UserCache.setUser(this, document.toObject(UserModel.class));
-                            finishSignIn();
-                        })
-                        .addOnFailureListener(e -> {
-                            String errorMsg = e.getLocalizedMessage();
-                            if (errorMsg == null) return;
-
-                            if (errorMsg.contains("password is invalid"))
-                                showErrorMsg("Please enter a valid password.");
-                            else showErrorMsg(errorMsg);
-                        });
-
-            } else showErrorMsg("User data does not exist.");
-        };
-
-        OnCompleteListener<SignInMethodQueryResult> emailCheckCompleteListener = task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                List<String> signInMethods = task.getResult().getSignInMethods();
-                if (signInMethods != null && !signInMethods.isEmpty()) {
-
-                    //2. firestore (user data check)
-                    firebaseFirestore
-                            .collection("users")
-                            .document(id)
-                            .get()
-                            .addOnCompleteListener(firestoreCompleteListener);
-
-                } else showErrorMsg("User account does not exist.");
-            } else showErrorMsg("Please enter a valid email address.");
-        };
-
-        //1. firebase auth (account exist check)
-        firebaseAuth
-                .fetchSignInMethodsForEmail(id)
-                .addOnCompleteListener(emailCheckCompleteListener);
     }
 
     private void finishSignIn() {

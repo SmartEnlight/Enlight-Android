@@ -4,15 +4,9 @@
 
     <data>
 
-        <!--        use viewmodel pleeeease-->
-
         <variable
             name="viewModel"
             type="com.david0926.enlight.MainViewModel" />
-
-        <variable
-            name="isAlert"
-            type="Boolean" />
 
         <variable
             name="onProgress"
@@ -27,16 +21,8 @@
             type="String" />
 
         <variable
-            name="time"
-            type="String" />
-
-        <variable
-            name="text"
-            type="String" />
-
-        <variable
-            name="pw"
-            type="String" />
+            name="db"
+            type="Integer" />
 
     </data>
 
@@ -79,19 +65,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/productb"
                     android:includeFontPadding="false"
-                    android:text="@{name+(isAlert?`(alert)`:``), default=`Device Name`}"
-                    android:textColor="@{!isAlert?@color/materialDarkBlack:@color/materialRed, default=@color/materialDarkBlack}"
+                    android:text="@{name, default=`Device Name`}"
+                    android:textColor="@color/materialDarkBlack"
                     android:textSize="24sp"
                     app:layout_constrainedWidth="true"
-                    app:layout_constraintEnd_toStartOf="@+id/textView5"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,58 +91,44 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/productb"
-                    android:includeFontPadding="false"
-                    android:text="@{time+` sec`, default=`0 sec`}"
-                    android:textColor="@color/materialGray7"
-                    android:textSize="20sp"
-                    app:layout_constrainedWidth="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="message"
-                android:text="@={text}"
-                app:layout_constraintBottom_toTopOf="@+id/btn_main1_send"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="pw"
-                android:text="@={viewModel.pw}"
-                app:layout_constraintBottom_toTopOf="@+id/editText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/btn_main1_send"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_box"
-                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/productb"
-                android:text="send"
-                android:textColor="@android:color/white"
+                android:text="@{db==0?@string/noise_off:@string/noise_on, default=@string/noise_off}"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="184dp"
+                android:layout_height="184dp"
+                android:src="@{db==0?@drawable/undraw_quite_town:@drawable/undraw_quite_town_red, default=@drawable/undraw_quite_town}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/productb"
+                android:text="@{db.toString()+` db`, default=`0 db`}"
+                android:textColor="@color/materialRed"
+                android:textSize="36sp"
+                android:visibility="@{db!=0, default=gone}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

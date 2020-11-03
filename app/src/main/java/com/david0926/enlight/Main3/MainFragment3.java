@@ -46,16 +46,16 @@ public class MainFragment3 extends Fragment {
         binding.btnMain3Profile.setOnClickListener(view -> {
             UserModel model = UserCache.getUser(mContext);
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setTitle("My Profile").setMessage("Username: "+model.getName()
-            +"\nEmail: "+model.getEmail()+"\nSign Up: "+model.getTime());
+            builder.setTitle("My Profile").setMessage("Username: "+model.getUsername()
+            +"\nEmail: "+model.getEmail());
             builder.setPositiveButton("Confirm", (dialogInterface, i) -> {}).show();
         });
 
         binding.btnMain3Share.setOnClickListener(view -> {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna join SafePad? \n" +
-                    "https://github.com/roian6/SafePad");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Wanna join Enlight? \n" +
+                    "https://github.com/roian6/Enlight");
             sendIntent.setType("text/plain");
 
             Intent shareIntent = Intent.createChooser(sendIntent, null);

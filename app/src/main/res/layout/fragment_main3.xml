@@ -56,7 +56,7 @@
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/productb"
                 android:includeFontPadding="false"
-                android:text="Hello, SafePad!"
+                android:text="Hello, Enlight!"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 app:layout_constrainedWidth="true"

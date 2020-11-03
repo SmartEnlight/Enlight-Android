@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="alert"
-            type="Integer" />
+            name="viewModel"
+            type="com.david0926.enlight.MainViewModel" />
 
         <variable
-            name="time"
-            type="Integer" />
+            name="date"
+            type="String" />
 
     </data>
 
@@ -54,95 +55,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout3"
-                        android:layout_width="match_parent"
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/productb"
+                        android:includeFontPadding="false"
+                        android:text="@{date, default=`Today`}"
+                        android:textSize="32sp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/productb"
-                            android:includeFontPadding="false"
-                            android:text="You Received"
-                            android:textColor="@color/materialGray7"
-                            android:textSize="16sp"
-                            app:layout_constrainedWidth="true"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textView4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/productb"
-                            android:includeFontPadding="false"
-                            android:text="@{alert+` alerts`, default=`0 alerts`}"
-                            android:textColor="@{alert&lt;25?@color/materialGreen:alert&lt;50?@color/materialYellow:@color/materialRed}"
-                            android:textSize="32sp"
-                            app:layout_constrainedWidth="true"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                        <TextView
-                            android:id="@+id/textView32"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/productb"
-                            android:includeFontPadding="false"
-                            android:text="This time."
-                            android:textColor="@color/materialGray7"
-                            android:textSize="16sp"
-                            app:layout_constrainedWidth="true"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:max="25"
-                        android:progress="@{alert}"
-                        android:progressTint="@color/materialGreen"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
-
-
-                    <ProgressBar
-                        android:id="@+id/progressBar2"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:max="50"
-                        android:progress="@{alert}"
-                        android:progressTint="@color/materialYellow"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
-
-                    <ProgressBar
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:max="100"
-                        android:progress="@{alert}"
-                        android:progressTint="@color/materialRed"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -164,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/productb"
                         android:includeFontPadding="false"
-                        android:text="Usage Total"
+                        android:text="Day"
                         android:textColor="@color/materialGray7"
                         android:textSize="20sp"
                         app:layout_constrainedWidth="true"
@@ -178,13 +106,72 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/productb"
                         android:includeFontPadding="false"
-                        android:text="@{time+`/1800 sec`, default=`0/1800 sec`}"
+                        android:text="@{viewModel.day+` alert`, default=`0 alert`}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="36sp"
                         app:layout_constrainedWidth="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:src="@drawable/undraw_coming_home"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/round_box"
+                    android:elevation="4dp"
+                    android:padding="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                    <ImageView
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:src="@drawable/undraw_quite_town"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/productb"
+                        android:includeFontPadding="false"
+                        android:text="Night"
+                        android:textColor="@color/materialGray7"
+                        android:textSize="20sp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/productb"
+                        android:includeFontPadding="false"
+                        android:text="@{viewModel.night+` alert`, default=`0 alert`}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="36sp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

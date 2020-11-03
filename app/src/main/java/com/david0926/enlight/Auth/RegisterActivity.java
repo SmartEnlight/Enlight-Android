@@ -1,7 +1,6 @@
 package com.david0926.enlight.Auth;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.david0926.enlight.MainActivity;
 import com.david0926.enlight.R;
 import com.david0926.enlight.databinding.ActivityRegisterBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,20 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createAccount(String name, String email, String pw) {
-
-        //1. firestore (upload user information)
-        firebaseFirestore
-                .collection("users")
-                .document(email)
-                .set(new UserModel(name, email, timeNow()))
-                .addOnSuccessListener(runnable -> {
-                    //2. firebase auth (create user)
-                    firebaseAuth
-                            .createUserWithEmailAndPassword(email, pw)
-                            .addOnSuccessListener(runnable1 -> finishSignUp())
-                            .addOnFailureListener(this, e -> showErrorMsg(e.getLocalizedMessage()));
-                })
-                .addOnFailureListener(e -> showErrorMsg(e.getLocalizedMessage()));
+        RegisterNetwork.register(email, pw, name, getResources(), this::finishSignUp, this::showErrorMsg);
     }
 
     private void finishSignUp() {
@@ -99,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.lottieRegiFinish.playAnimation();
 
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             finish();
         }, binding.lottieRegiFinish.getDuration() + 1000);
     }
@@ -129,10 +114,6 @@ public class RegisterActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
-    }
-
-    private String timeNow() {
-        return new SimpleDateFormat("yyyy/MM/dd hh:mm aa", Locale.ENGLISH).format(new Date());
     }
 
     @Override

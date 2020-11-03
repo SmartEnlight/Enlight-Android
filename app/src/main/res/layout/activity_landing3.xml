@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:src="@drawable/ic_undraw_digital_nomad"
+            android:src="@drawable/undraw_new_ideas"
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="244dp"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/apple_sd_gothic_neo_h"
-            android:text="지금 시작하기"
+            android:text="스마트 무드등, Enlight"
             android:textColor="@color/materialGray7"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
@@ -46,7 +46,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/apple_sd_gothic_neo_r"
             android:gravity="center"
-            android:text="이젠 Safe Pad와 함께, \n안심하고 컴퓨터를 사용해 보세요!"
+            android:text="홈 IoT 무드등 Enlight와 함께, \n층간소음 걱정 없는 생활을 즐겨요!"
             android:textColor="@color/materialGray7"
             android:textSize="18sp"
             app:layout_constrainedWidth="true"

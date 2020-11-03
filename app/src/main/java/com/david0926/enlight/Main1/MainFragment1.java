@@ -1,13 +1,11 @@
 package com.david0926.enlight.Main1;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +16,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.david0926.enlight.MainViewModel;
 import com.david0926.enlight.R;
 import com.david0926.enlight.databinding.FragmentMain1Binding;
+import com.david0926.enlight.util.TokenCache;
 
-import org.jetbrains.annotations.NotNull;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainFragment1 extends Fragment {
 
@@ -32,12 +33,6 @@ public class MainFragment1 extends Fragment {
     }
 
     private String name;
-
-    private BroadcastReceiver broadcastReceiverConnect;
-    private BroadcastReceiver broadcastReceiverDisConnect;
-    private BroadcastReceiver broadcastReceiverFailed;
-
-    private Context mContext;
     private FragmentMain1Binding binding;
 
     private MainViewModel viewModel;
@@ -47,12 +42,6 @@ public class MainFragment1 extends Fragment {
     }
 
     private MainFragment1() {
-    }
-
-    @Override
-    public void onAttach(@NotNull Context context) {
-        super.onAttach(context);
-        mContext = context;
     }
 
     @Nullable
@@ -66,78 +55,54 @@ public class MainFragment1 extends Fragment {
             binding.setName("Device Name");
             binding.setIsConnected(false);
         }
-        binding.setTime("0");
         binding.setOnProgress(false);
-        binding.setIsAlert(false);
-        binding.setText("");
-        binding.setPw("");
 
         viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
         binding.setViewModel(viewModel);
 
-        binding.btnMain1Send.setOnClickListener(v -> sendMessage(binding.getText()));
-
         binding.btnMain1Scan.setOnClickListener(view -> {
             if (!binding.getIsConnected()) {
-                mContext.sendBroadcast(new Intent("main1_scan_device"));
+                viewModel.onScanListener.onScan();
                 binding.setOnProgress(true);
             } else {
-                mContext.sendBroadcast(new Intent("main1_disconnect"));
-                binding.setIsConnected(false);
+                viewModel.onDisconnectRequestListener.onDisconnectRequest();
             }
         });
 
-        broadcastReceiverConnect = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (action != null && action.equals("main_connected")) {
-                    binding.setOnProgress(false);
-                    binding.setIsConnected(true);
-                    binding.setName(intent.getStringExtra("name"));
-                }
-            }
-        };
-        mContext.registerReceiver(broadcastReceiverConnect, new IntentFilter("main_connected"));
+        binding.imageView4.setOnClickListener(v -> viewModel.onSendListener.onSend("test"));
 
-        broadcastReceiverDisConnect = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (action != null && action.equals("main_disconnected")) {
-                    binding.setOnProgress(false);
-                    binding.setIsConnected(false);
-                }
-            }
-        };
-        mContext.registerReceiver(broadcastReceiverDisConnect, new IntentFilter("main_disconnected"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:dd", Locale.getDefault());
 
-        broadcastReceiverFailed = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (action != null && action.equals("main_failed")) {
-                    binding.setOnProgress(false);
-                }
+        viewModel.onReceiveListener = msg -> {
+            Log.d("baam", "onCreate: " + msg);
+            if (msg.length() == 6 && msg.charAt(0) == '[' && msg.charAt(msg.length() - 1) == ']') {
+                int db = Integer.parseInt(msg.substring(1, 5));
+                binding.setDb(db);
+                AlertNetwork.sendAlert(TokenCache.getToken(requireContext()), simpleDateFormat.format(new Date()),
+                        db, getResources(), body -> {
+
+                        }, errorMsg -> Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show());
             }
         };
-        mContext.registerReceiver(broadcastReceiverFailed, new IntentFilter("main_failed"));
+
+        viewModel.onConnectListener = name -> {
+            binding.setOnProgress(false);
+            binding.setIsConnected(true);
+            binding.setName(name);
+        };
+
+        viewModel.onDisconnectListener = () -> {
+            binding.setOnProgress(false);
+            binding.setIsConnected(false);
+        };
+
+        viewModel.onFailedListener = () -> binding.setOnProgress(false);
 
         return binding.getRoot();
     }
 
-    private void sendMessage(String msg) {
-        Intent intent = new Intent("main1_send_message");
-        intent.putExtra("message", msg);
-        mContext.sendBroadcast(intent);
-        //binding.setText("");
-    }
-
     @Override
     public void onDestroy() {
-        mContext.unregisterReceiver(broadcastReceiverConnect);
-        mContext.unregisterReceiver(broadcastReceiverFailed);
-        mContext.unregisterReceiver(broadcastReceiverDisConnect);
         super.onDestroy();
     }
 }

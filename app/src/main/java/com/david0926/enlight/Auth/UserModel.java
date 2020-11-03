@@ -1,38 +1,19 @@
 package com.david0926.enlight.Auth;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserModel {
-
-    private String name, email, time;
-
-    public UserModel(){}
-
-    public UserModel(String name, String email, String time) {
-        this.name = name;
-        this.email = email;
-        this.time = time;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
+    private String _id;
+    private String email;
+    private String username;
+    private String lastLoginTime;
+    private String createdTime;
+    private Integer loginCount;
+    private String deviceId;
+    private Boolean notification;
 }

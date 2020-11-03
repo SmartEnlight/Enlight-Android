@@ -15,12 +15,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:src="@drawable/ic_undraw_having_fun"
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="244dp"
             android:layout_marginHorizontal="24dp"
             android:paddingHorizontal="36dp"
+            android:src="@drawable/undraw_neighbors"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,11 +29,13 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/apple_sd_gothic_neo_h"
-            android:text="우리의 손목은 소중하니까"
+            android:text="끊이지 않는 층간소음 문제"
             android:textColor="@color/materialGray7"
             android:textSize="28sp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -46,7 +48,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/apple_sd_gothic_neo_r"
             android:gravity="center"
-            android:text="SafePad가 손목 터널 증후군으로부터, \n당신을 안전하게 지켜줄게요!"
+            android:text="오늘날 다세대 주택에 거주하는 가정은, \n끊임없는 층간소음에 시달리고 있습니다."
             android:textColor="@color/materialGray7"
             android:textSize="18sp"
             app:layout_constrainedWidth="true"

@@ -15,12 +15,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:src="@drawable/ic_undraw_segmentation"
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="244dp"
             android:layout_marginHorizontal="24dp"
             android:paddingHorizontal="36dp"
+            android:src="@drawable/undraw_coming_home"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,11 +29,13 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/apple_sd_gothic_neo_h"
-            android:text="한눈에 보는 통계"
+            android:text="스마트 가전으로 해결하세요"
             android:textColor="@color/materialGray7"
             android:textSize="28sp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -46,7 +48,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/apple_sd_gothic_neo_r"
             android:gravity="center"
-            android:text="앱에서는 주간/월간 사용량 통계와 \n알림 횟수 등을 한눈에 볼 수 있어요."
+            android:text="하지만 실시간으로 층간소음을 감지하고, \n알려주는 디바이스가 있다면 어떨까요?"
             android:textColor="@color/materialGray7"
             android:textSize="18sp"
             app:layout_constrainedWidth="true"

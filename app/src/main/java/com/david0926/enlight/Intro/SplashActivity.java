@@ -13,6 +13,7 @@ import com.david0926.enlight.Auth.LoginActivity;
 import com.david0926.enlight.MainActivity;
 import com.david0926.enlight.R;
 import com.david0926.enlight.util.SharedPreferenceUtil;
+import com.david0926.enlight.util.UserCache;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
@@ -30,10 +31,10 @@ public class SplashActivity extends AppCompatActivity {
             SharedPreferenceUtil.putInt(this, "alert", 0);
             SharedPreferenceUtil.putInt(this, "time", 0);
             boolean isLandingShown = getSharedPreferences(this).getBoolean("landing_shown", false);
-            //isLandingShown = false; //remove this line, to show landing page only once
+            isLandingShown = false; //remove this line, to show landing page only once
 
             if (isLandingShown)
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                if (UserCache.getUser(this) != null) {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             else {
